@@ -1,4 +1,4 @@
-FROM maven:3.0.5 AS MAVEN_BUILD
+FROM maven:latest AS MAVEN_BUILD
 MAINTAINER Amol Aherkar
 COPY pom.xml /build/
 COPY src /build/src/
