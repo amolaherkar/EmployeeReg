@@ -1,0 +1,38 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+name: my-springboot-example
+labels:
+  app: my-springboot-example
+spec:
+strategy:
+  type: Recreate
+template:
+  metadata:
+    labels:
+      app: my-springboot-example
+      tier: my-springboot-example
+  spec:
+    containers:
+    - name: my-springboot-example
+      image: amolaherkar/my-springboot-example:latest
+      imagePullPolicy: Always
+      ports:
+      - containerPort: 8089
+        name: my-springboot-example
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+name: my-springboot-example
+labels:
+  app: my-springboot-example
+spec:
+ports:
+  - port: 8089
+    targetPort: 8089
+selector:
+  app: my-springboot-example
+  tier: my-springboot-example
+type: LoadBalancer
