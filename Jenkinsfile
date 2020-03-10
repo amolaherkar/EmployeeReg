@@ -3,7 +3,7 @@ pipeline {
     environment {
         PROJECT_ID = 'my-sample-project-270014'
         CLUSTER_NAME = 'my-cluster-1'
-        LOCATION = 'us-central1-c	'
+        LOCATION = 'us-central1-c'
         CREDENTIALS_ID = 'GKE'
     }
     stages {
