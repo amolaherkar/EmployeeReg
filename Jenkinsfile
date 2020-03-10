@@ -19,19 +19,10 @@ pipeline {
                 }
             }
         }
-        stage("Push image") {
-            steps {
-                script {
-                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
-                            myapp.push("latest")
-                            myapp.push("${env.BUILD_ID}")
-                    }
-                }
-            }
-        }        
+       
         stage('Deploy to GKE') {
             steps{
-                sh "sed -i 's/gcr.io/my-sample-project-270014/spring-boot-example:v15/g' deployment.yaml"
+                sh "sed -i 'gcr.io/my-sample-project-270014/spring-boot-example:v15' deployment.yaml"
                 step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, zone: env.LOCATION, manifestPattern: 'deployment.yaml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
             }
         }
