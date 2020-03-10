@@ -12,17 +12,11 @@ pipeline {
                 checkout scm
             }
         }
-        stage("Build image") {
-            steps {
-                script {
-                    myapp = docker.build("amolaherkar/my-springboot-example:${env.BUILD_ID}")
-                }
-            }
-        }
+
        
         stage('Deploy to GKE') {
             steps{
-                sh "sed -i 's/gcr.io/my-sample-project-270014/spring-boot-example:v1/g' deployment.yaml"
+                sh "sed -i 's#gcr.io/my-sample-project-270014/spring-boot-example:v1#g' deployment.yaml"
                 step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, zone: env.LOCATION, manifestPattern: 'deployment.yaml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
             }
         }
